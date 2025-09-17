@@ -22,12 +22,17 @@ export default async function handler(req, res) {
 
     // 擷取 a, b, c
     const script = $('script').html() || '';
+    console.log('Script content:', script); // debug 用
+
     const aMatch = script.match(/var\s+a=toNumbers\("([0-9a-fA-F]+)"\)/);
     const bMatch = script.match(/,\s*b=toNumbers\("([0-9a-fA-F]+)"\)/);
     const cMatch = script.match(/,\s*c=toNumbers\("([0-9a-fA-F]+)"\)/);
 
     if (!aMatch || !bMatch || !cMatch) {
-      return res.status(502).json({ error: 'Challenge parse failed' });
+      return res.status(502).json({
+        error: 'Challenge parse failed',
+        debug: { a: aMatch?.[1], b: bMatch?.[1], c: cMatch?.[1], script }
+      });
     }
 
     const aHex = aMatch[1];
