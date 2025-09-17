@@ -1,0 +1,14 @@
+name: Update Cache
+
+on:
+  schedule:
+    - cron: "*/1 * * * *"   # 每分鐘執行一次（UTC 時間）
+  workflow_dispatch:        # 允許手動觸發
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Vercel proxy
+        run: |
+          curl -s "https://infinityfree-proxy.vercel.app/api?station=B35"
